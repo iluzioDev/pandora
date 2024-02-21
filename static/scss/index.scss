@@ -1,0 +1,35 @@
+@import 'root';
+
+form span {
+  @extend .d-flex;
+  @extend .align-items-center;
+}
+
+main > div > div {
+  @extend .container;
+  @extend .m-0;
+  @extend .p-0;
+  @extend .mb-3;
+}
+
+main > div > div > * {
+  @extend .row;
+}
+
+main > div > div > * > * {
+  @extend .col;
+}
+
+#curve-info span input {
+  width: 3.5rem;
+  @extend .mx-1;
+}
+
+.canvas > * {
+  @extend .w-100;
+}
+
+.canvas > * > * {
+  @extend .border;
+  @extend .rounded;
+}

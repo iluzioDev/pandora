@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Luis Chinea Rangel">
+  <meta name="description" content="">
+
+  <title>About the Project</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/about.css') }}">
+  <link rel="icon" href="{{ url_for('static', filename='images/ull/icono/icono_circulo.png') }}">
+</head>
+
+<body>
+  <header></header>
+  <main>
+    <h1>A bit of Context</h1>
+    <div>
+      <h2>What are Elliptic Curves?</h2>
+      <p>Elliptic curves are a type of mathematical function that satisfy the following equation:</p>
+      <p class="formula">y<sup>2</sup> = x<sup>3</sup> + ax + b</p>
+      <p>Where a and b are constants. The graph of this function is a curve that looks like this:</p>
+      <div class="canvas">
+        <div>
+          <canvas id="EllipticCurve"></canvas>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer></footer>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script src="{{ url_for('static', filename='js/common.js') }}"></script>
+</body>
+
+</html>

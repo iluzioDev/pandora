@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Luis Chinea Rangel">
+  <meta name="description" content="Generate and simulate elliptic curves and their properties.">
+
+  <title>Elliptic Curve Cryptography (ECC)</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+  <link rel="icon" href="{{ url_for('static', filename='images/ull/icono/icono_circulo.png') }}">
+</head>
+
+<body>
+  <header></header>
+  <main>
+    <div>
+      <h1>Curve Simulation</h1>
+      <h2>Properties</h2>
+      <div id="curve-info">
+        <div>
+          <div class="d-flex flex-column justify-content-center">
+            <form id="curve" class="d-flex flex-column">
+              <label for="a" class="mt-0">Curve</label>
+              <span class="d-flex">y<sup>2</sup> = x<sup>3</sup> + <input type="number" id="a" placeholder="a"
+                  required>x
+                +
+                <input type="number" id="b" placeholder="b" required></span>
+            </form>
+            <form id="prime-base-form" class="d-flex flex-column justify-content-center">
+              <div class="row">
+                <div class="col">
+                  <label for="p">Prime Number</label>
+                  <input type="number" id="p" placeholder="1, 2, 3, 5, 7..." required disabled>
+                </div>
+                <div class="col">
+                  <label for="base_point">Base Point</label>
+                  <select id="base_point" disabled>
+                  </select>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="canvas">
+            <div>
+              <canvas id="Curve"></canvas>
+            </div>
+          </div>
+        </div>
+        <div class="mt-3">
+          <div class="d-flex flex-column">
+            <h2 class="mt-2 mb-0">Secrets</h2>
+            <div class="d-flex flex-column justify-content-center">
+              <form id="dA-form" class="row">
+                <div class="col">
+                  <label for="dA">Private Key (dA)</label>
+                  <input type="number" id="dA" placeholder="dA" required disabled>
+                </div>
+                <div class="col">
+                  <label for="public_key_dA">Public Key (dA)</label>
+                  <input type="text" id="public_key_dA" placeholder="x, y" required disabled>
+                </div>
+              </form>
+              <form id="dB-form" class="row">
+                <div class="col">
+                  <label for="dB">Private Key (dB)</label>
+                  <input type="number" id="dB" placeholder="dB" required disabled>
+                </div>
+                <div class="col">
+                  <label for="public_key_dB">Public Key (dB)</label>
+                  <input type="text" id="public_key_dB" placeholder="x, y" required disabled>
+                </div>
+              </form>
+              <form id="shared-form" class="row">
+                <div class="col-6">
+                  <label for="shared_key">Shared Key</label>
+                  <input type="text" id="shared_key" placeholder="x, y" required disabled>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="canvas my-4">
+            <div>
+              <canvas id="Points"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+      <h2>Sending Messages</h2>
+      <div id="message-info">
+        <div class="d-flex">
+          <div class="d-flex justify-content-center">
+            <button type="button" class="btn btn-secondary w-50" disabled>Alice</button>
+          </div>
+          <div class="d-flex justify-content-center">
+            <button id="reverse" class="btn btn-primary w-25"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+                <path
+                  d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9" />
+                <path fill-rule="evenodd"
+                  d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z" />
+              </svg></button>
+          </div>
+          <div class="d-flex justify-content-center">
+            <button type="button" class="btn btn-secondary w-50" disabled>Bob</button>
+          </div>
+        </div>
+        <form id="message-form">
+          <div>
+            <label for="message">Message</label>
+            <input type="text" id="message" placeholder="Message" required disabled>
+          </div>
+          <div>
+            <label for="encoded_message">Encoded Message</label>
+            <input type="text" id="encoded_message" placeholder="Encoded Message" required disabled>
+          </div>
+          <div>
+            <label for="encrypted_message">Encrypted Message</label>
+            <input type="text" id="encrypted_message" placeholder="Encrypted Message" required disabled>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+  <footer></footer>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"
+    integrity="sha512-SIMGYRUjwY8+gKg7nn9EItdD8LCADSDfJNutF9TPrvEo86sQmFMh6MyralfIyhADlajSxqc7G0gs7+MwWF/ogQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0"></script>
+  <script src="{{ url_for('static', filename='global/sweetalert2.all.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='global/complex.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/common.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/utils.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+</body>
+
+</html>

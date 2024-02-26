@@ -94,8 +94,8 @@
             <button type="button" class="btn btn-secondary w-50" disabled>Alice</button>
           </div>
           <div class="d-flex justify-content-center">
-            <button id="reverse" class="btn btn-primary w-25"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-                fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
+            <button id="reverse" class="btn btn-primary w-25"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
                 <path
                   d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9" />
                 <path fill-rule="evenodd"
@@ -108,18 +108,22 @@
         </div>
         <form id="message-form">
           <div>
+            <label for="alphabet">Define the Alphabet</label>
+            <input type="text" id="alphabet" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" required disabled>
+          </div>
+          <div>
             <label for="message">Message</label>
             <input type="text" id="message" placeholder="Message" required disabled>
           </div>
-          <div>
-            <label for="encoded_message">Encoded Message</label>
-            <input type="text" id="encoded_message" placeholder="Encoded Message" required disabled>
-          </div>
-          <div>
-            <label for="encrypted_message">Encrypted Message</label>
-            <input type="text" id="encrypted_message" placeholder="Encrypted Message" required disabled>
-          </div>
         </form>
+        <div class="d-flex">
+          <div id="msgs" class="container">
+            <row hidden>
+              <h3>Encoded Messages</h3>
+              <h3>Encrypted Messages</h3>
+            </row>
+          </div>
+        </div>
       </div>
     </div>
   </main>

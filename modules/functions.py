@@ -5,6 +5,8 @@ Created on Tue Apr 24 2023
 
 @autor: Luis Chinea Rangel
 """
+ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+
 def gcd(a, b):
   """
   Returns Greatest Common Divisor of a and b.
@@ -152,7 +154,7 @@ def add_points(point1, point2, curve, p):
   y3 = (lamb * (x1 - x3) - y1) % p
   return x3, y3
 
-def multiply_point_by_scalar(point, scalar, curve, p):
+def multiply_scalar(point, scalar, curve, p):
   """
   Multiply a point on the elliptic curve by a scalar.
 
@@ -181,7 +183,7 @@ def multiply_point_by_scalar(point, scalar, curve, p):
 
   return result
 
-def encode(message, curve, p):
+def encode(message, curve, p, M=None):
   """
   Encode a message using the elliptic curve Diffie-Hellman and ElGamal modes.
 
@@ -198,7 +200,8 @@ def encode(message, curve, p):
   if not message.isnumeric():
     return 'Invalid message!'
   m = int(message)
-  M = nearest_power_of_2(m)
+  if M is None:
+    M = nearest_power_of_2(m)
   h = p // M
 
   points = calculate_points(curve, p)
@@ -213,7 +216,7 @@ def encode(message, curve, p):
   return (x, y), M, h
 
 
-def encrypt(message, curve, p, G, dA, dB):
+def encrypt(message, curve, p, G, dA, dB, alphabet=None):
   """
   Encrypt a message using the elliptic curve Diffie-Hellman and ElGamal modes.
 
@@ -231,8 +234,12 @@ def encrypt(message, curve, p, G, dA, dB):
   if not isinstance(message, str) or not isinstance(curve, tuple) or not isinstance(p, int):
     return 'Invalid arguments!'
 
-  Qm = encode(message, curve, p)[0]
-  dAG = multiply_point_by_scalar(G, dA, curve, p)
-  dBG = multiply_point_by_scalar(G, dB, curve, p)
+  if alphabet is None:
+    Qm = encode(message, curve, p)[0]
+  else:
+    message_i = alphabet.index(message)
+    Qm = encode(str(message_i), curve, p, len(alphabet))[0]
+  dAG = multiply_scalar(G, dA, curve, p)
+  dBG = multiply_scalar(G, dB, curve, p)
 
-  return add_points(Qm, multiply_point_by_scalar(dBG, dA, curve, p), curve, p), dAG
+  return add_points(Qm, multiply_scalar(dBG, dA, curve, p), curve, p), dAG

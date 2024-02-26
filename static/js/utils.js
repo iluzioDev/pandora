@@ -85,9 +85,11 @@ function resetInputs(startpoint) {
     if (!excluded.includes(currentId)) {
       inputElements[i].value = "";
       inputElements[i].disabled = true;
-      if (currentId === "base_point") {
+      if (currentId === "base_point")
         inputElements[i].innerHTML = "";
-      }
+      if (currentId === "alphabet")
+        inputElements[i].value = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     }
   }
+
 }

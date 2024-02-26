@@ -194,6 +194,44 @@ function remarkBasePoint() {
   });
 }
 
+/// Event listeners to validate Curve Properties inputs
+function validateCurve() {
+  // Event handlers for inputs
+  ids.forEach((id) => {
+    $(`#${id}`).on("input", function (e) {
+      e.preventDefault();
+      resetInputs(ids[ids.length - 1]);
+      generateCurve();
+    });
+  });
+
+  // Event handler for input with ID "p"
+  $("#p").on("input", function (e) {
+    e.preventDefault();
+    resetInputs("p");
+    const value = $(this).val();
+    if (value !== "") {
+      calculatePoints();
+    }
+  });
+
+  // Event handler for select with ID "base_point"
+  $("#base_point").on("change", function (e) {
+    e.preventDefault();
+    resetInputs("base_point");
+    if (PointsChart.data.datasets.length > 1) {
+      PointsChart.data.datasets.splice(1);
+    }
+    PointsChart.update();
+    remarkBasePoint();
+    if ($(this).val() !== "") {
+      secrets.forEach((id) => {
+        $(`#${id}`).prop("disabled", false);
+      });
+    }
+  });
+}
+
 /// Generates the public keys
 function generateDX(id) {
   const private_key = $(`#${id}`).val();
@@ -260,6 +298,7 @@ function generateShared() {
     success: function (data) {
       const key = `(${data.key})`;
       $("#shared_key").val(key);
+      $("#alphabet").prop("disabled", false);
       $("#message").prop("disabled", false);
 
       const index = PointsChart.data.datasets[0].data.findIndex((element) => {
@@ -281,28 +320,25 @@ function generateShared() {
 
 /// Encrypts the message
 function encrypt() {
+  const alphabet = $("#alphabet").val();
   const message = $("#message").val();
   const dA = $("#dA").val();
   const dB = $("#dB").val();
 
-  if (message === "") {
-    $("#encoded_message").val("");
-    $("#encrypted_message").val("");
-    return;
-  }
-
+  if (message === "") return;
   const reverse = $("#reverse").is(":checked");
 
   $.ajax({
     url: "/encrypt",
     type: "POST",
-    data: JSON.stringify({ message, dA, dB, reverse }),
+    data: JSON.stringify({ message, dA, dB, alphabet, reverse }),
     contentType: "application/json; charset=utf-8",
     dataType: "json",
     success: function (data) {
-      const { encoded_message, encrypted_message, public_key } = data;
-      $("#encoded_message").val(`(${encoded_message})`);
-      $("#encrypted_message").val(`(${encrypted_message}), (${public_key})`);
+      const { encoded, encrypted } = data;
+      $("#msgs").children().first().prop("hidden", true);
+      for (let i = 0; i < encoded.length; i++)
+        $("#msgs").append(`<div class="row"><div> ${encoded[i]} </div> <div> ${encrypted[i]} </div></div>`);
     },
     error: function (err) {
       console.log(err);
@@ -310,51 +346,15 @@ function encrypt() {
   });
 }
 
-/// Event listeners to validate Curve Properties inputs
-function validateCurve() {
-  // Event handlers for inputs
-  ids.forEach((id) => {
-    $(`#${id}`).on("input", function (e) {
-      e.preventDefault();
-      resetInputs(ids[ids.length - 1]);
-      generateCurve();
-    });
-  });
-
-  // Event handler for input with ID "p"
-  $("#p").on("input", function (e) {
-    e.preventDefault();
-    resetInputs("p");
-    const value = $(this).val();
-    if (value !== "") {
-      calculatePoints();
-    }
-  });
-
-  // Event handler for select with ID "base_point"
-  $("#base_point").on("change", function (e) {
-    e.preventDefault();
-    resetInputs("base_point");
-    if (PointsChart.data.datasets.length > 1) {
-      PointsChart.data.datasets.splice(1);
-    }
-    PointsChart.update();
-    remarkBasePoint();
-    if ($(this).val() !== "") {
-      secrets.forEach((id) => {
-        document.getElementById(id).disabled = false;
-      });
-    }
-  });
-}
-
 function validateForms() {
   validateCurve();
-
   validateDX("dA");
   validateDX("dB");
-
-  $("#message-form").on("input", function (e) {
+  $("#alphabet").on("change", function (e) {
+    e.preventDefault();
+    resetInputs("alphabet");
+  });
+  $("#message").on("input", function (e) {
     e.preventDefault();
     encrypt();
   });

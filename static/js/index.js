@@ -210,9 +210,10 @@ function validateCurve() {
     e.preventDefault();
     resetInputs("p");
     const value = $(this).val();
-    if (value !== "") {
-      calculatePoints();
-    }
+    if (value !== "")
+      setTimeout(() => {
+        calculatePoints();
+      }, 500);
   });
 
   // Event handler for select with ID "base_point"
@@ -336,9 +337,12 @@ function encrypt() {
     dataType: "json",
     success: function (data) {
       const { encoded, encrypted } = data;
-      $("#msgs").children().first().prop("hidden", true);
-      for (let i = 0; i < encoded.length; i++)
-        $("#msgs").append(`<div class="row"><div> ${encoded[i]} </div> <div> ${encrypted[i]} </div></div>`);
+      $("#encoded").append(`<h3>Encoded message</h3>`);
+      $("#encrypted").append(`<h3>Encrypted message</h3>`);
+      for (let i = 0; i < encoded.length; i++) {
+        $("#encoded").append(`<div>${encoded[i]}</div>`);
+        $("#encrypted").append(`<div>${encrypted[i]}</div>`);
+      }
     },
     error: function (err) {
       console.log(err);
@@ -352,11 +356,14 @@ function validateForms() {
   validateDX("dB");
   $("#alphabet").on("change", function (e) {
     e.preventDefault();
-    resetInputs("alphabet");
   });
   $("#message").on("input", function (e) {
     e.preventDefault();
-    encrypt();
+    setTimeout(() => {
+      $("#encoded").html("");
+      $("#encrypted").html("");
+      encrypt();
+    }, 1000);
   });
 }
 

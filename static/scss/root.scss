@@ -1,4 +1,4 @@
-@import '../../node_modules/bootstrap/scss/bootstrap';
+@import "../../node_modules/bootstrap/scss/bootstrap";
 
 :root {
   --color-1: rgb(87, 6, 140);
@@ -10,6 +10,9 @@
   margin: 0;
   padding: 0;
   text-decoration: none;
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 400;
+  font-style: normal;
 }
 
 body,
@@ -47,7 +50,9 @@ header a:hover {
   text-decoration: underline;
 }
 
-header .nav-item, header .nav-item::after, header .nav-item a {
+header .nav-item,
+header .nav-item::after,
+header .nav-item a {
   display: inline-block;
 }
 

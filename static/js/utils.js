@@ -71,10 +71,10 @@ function resizeCanvasElements() {
 function resetInputs(startpoint) {
   const excluded =
     startpoint === "dA"
-      ? ["dB", "public_key_dB", "shared_key"]
+      ? ["dB", "dBG", "shared"]
       : startpoint === "dB"
-      ? ["dA", "public_key_dA", "shared_key"]
-      : [];
+        ? ["dA", "dAG", "shared"]
+        : [];
 
   const startpointIndex = inputElements.findIndex(
     (element) => element.id === startpoint
@@ -82,10 +82,11 @@ function resetInputs(startpoint) {
 
   for (let i = startpointIndex + 1; i < inputElements.length; i++) {
     const currentId = inputElements[i].id;
+    if (currentId === "Switch") continue;
     if (!excluded.includes(currentId)) {
       inputElements[i].value = "";
       inputElements[i].disabled = true;
-      if (currentId === "base_point")
+      if (currentId === "base")
         inputElements[i].innerHTML = "";
       if (currentId === "alphabet") {
         inputElements[i].value = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";

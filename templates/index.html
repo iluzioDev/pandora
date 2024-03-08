@@ -8,8 +8,16 @@
   <meta name="description" content="Generate and simulate elliptic curves and their properties.">
 
   <title>Elliptic Curve Cryptography (ECC)</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
   <link rel="icon" href="{{ url_for('static', filename='images/ull/icono/icono_circulo.png') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Kode+Mono:wght@400..700&display=swap"
+    rel="stylesheet">
 </head>
 
 <body>
@@ -35,8 +43,8 @@
                   <input type="number" id="p" placeholder="1, 2, 3, 5, 7..." required disabled>
                 </div>
                 <div class="col">
-                  <label for="base_point">Base Point</label>
-                  <select id="base_point" disabled>
+                  <label for="base">Base Point</label>
+                  <select id="base" disabled>
                   </select>
                 </div>
               </div>
@@ -58,8 +66,8 @@
                   <input type="number" id="dA" placeholder="dA" required disabled>
                 </div>
                 <div class="col">
-                  <label for="public_key_dA">Public Key (dA)</label>
-                  <input type="text" id="public_key_dA" placeholder="x, y" required disabled>
+                  <label for="dAG">Public Key (dA)</label>
+                  <input type="text" id="dAG" placeholder="x, y" required disabled>
                 </div>
               </form>
               <form id="dB-form" class="row">
@@ -68,14 +76,14 @@
                   <input type="number" id="dB" placeholder="dB" required disabled>
                 </div>
                 <div class="col">
-                  <label for="public_key_dB">Public Key (dB)</label>
-                  <input type="text" id="public_key_dB" placeholder="x, y" required disabled>
+                  <label for="dBG">Public Key (dB)</label>
+                  <input type="text" id="dBG" placeholder="x, y" required disabled>
                 </div>
               </form>
               <form id="shared-form" class="row">
                 <div class="col-6">
-                  <label for="shared_key">Shared Key</label>
-                  <input type="text" id="shared_key" placeholder="x, y" required disabled>
+                  <label for="shared">Shared Key</label>
+                  <input type="text" id="shared" placeholder="x, y" required disabled>
                 </div>
               </form>
             </div>
@@ -87,42 +95,43 @@
           </div>
         </div>
       </div>
-      <h2>Sending Messages</h2>
-      <div id="message-info">
-        <div class="d-flex">
-          <div class="d-flex justify-content-center">
-            <button type="button" class="btn btn-secondary w-50" disabled>Alice</button>
-          </div>
-          <div class="d-flex justify-content-center">
-            <button id="reverse" class="btn btn-primary w-25"><svg xmlns="http://www.w3.org/2000/svg" width="16"
-                height="16" fill="currentColor" class="bi bi-arrow-repeat" viewBox="0 0 16 16">
-                <path
-                  d="M11.534 7h3.932a.25.25 0 0 1 .192.41l-1.966 2.36a.25.25 0 0 1-.384 0l-1.966-2.36a.25.25 0 0 1 .192-.41m-11 2h3.932a.25.25 0 0 0 .192-.41L2.692 6.23a.25.25 0 0 0-.384 0L.342 8.59A.25.25 0 0 0 .534 9" />
-                <path fill-rule="evenodd"
-                  d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5 5 0 0 0 8 3M3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9z" />
-              </svg></button>
-          </div>
-          <div class="d-flex justify-content-center">
-            <button type="button" class="btn btn-secondary w-50" disabled>Bob</button>
-          </div>
+      <div id="message-info" class="container">
+        <div class="row">
+          <h2 class="col-4">Sending Messages</h2>
+          <h2 class="col-4 text-center">Encoded message</h2>
+          <h2 class="col-4 text-center">Encrypted message</h2>
         </div>
-        <form id="message-form">
-          <div>
-            <label for="alphabet">Define the Alphabet</label>
-            <input type="text" id="alphabet" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" required disabled>
-          </div>
-          <div>
-            <label for="message">Message</label>
-            <input type="text" id="message" placeholder="Message" required disabled>
-          </div>
-        </form>
-        <div class="d-flex">
-          <div id="msgs" class="container">
-            <div class="row">
-              <div id="encoded" class="col d-flex flex-column">
+        <div class="row">
+          <form id="message-form" class="d-flex flex-column col-4">
+            <div>
+              <div id="alphabet-options" class="d-flex flex-wrap justify-content-between">
+                <button id="alphanumeric" type="button" class="btn mt-1" data-bs-toggle="button">Alphanumeric</button>
+                <button id="case-insensitive" type="button" class="btn mt-1" data-bs-toggle="button">Case
+                  Insensitive</button>
+                <button id="spanish" type="button" class="btn mt-1" data-bs-toggle="button">Spanish</button>
+                <button id="decimal" type="button" class="btn mt-1" data-bs-toggle="button">Decimal</button>
+                <button id="binary" type="button" class="btn mt-1" data-bs-toggle="button">Binary</button>
+                <button id="hexadecimal" type="button" class="btn mt-1" data-bs-toggle="button">Hexadecimal</button>
               </div>
-              <div id="encrypted" class="col d-flex flex-column">
-              </div>
+              <label for="alphabet">Define the Alphabet</label>
+              <input type="text" id="alphabet" value="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789" required disabled>
+            </div>
+            <div>
+              <label for="message">Message</label>
+              <input type="text" id="message" placeholder="Message" required disabled>
+            </div>
+            <div class="d-flex flex-column align-items-center">
+              <label for="alphabet">Sender Settings</label>
+              <input type="checkbox" checked data-toggle="toggle" data-on="Alice" data-off="Bob" data-onstyle="primary"
+                data-offstyle="success" id="Switch">
+            </div>
+          </form>
+          <div class="d-flex col-4">
+            <div id="encoded" class="col d-flex flex-column align-items-center">
+            </div>
+          </div>
+          <div class="d-flex col-4">
+            <div id="encrypted" class="col d-flex flex-column align-items-center">
             </div>
           </div>
         </div>
@@ -132,6 +141,10 @@
   <footer></footer>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"
     integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"
     integrity="sha512-SIMGYRUjwY8+gKg7nn9EItdD8LCADSDfJNutF9TPrvEo86sQmFMh6MyralfIyhADlajSxqc7G0gs7+MwWF/ogQ=="
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>

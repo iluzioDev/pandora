@@ -60,7 +60,7 @@ function generateCurve() {
     b: parseInt($("#b").val()),
   };
   $.ajax({
-    url: "/generate-curve",
+    url: "/curve",
     type: "POST",
     data: JSON.stringify(request),
     contentType: "application/json; charset=utf-8",
@@ -107,7 +107,7 @@ function calculatePoints() {
     p: parseInt($("#p").val()),
   };
   $.ajax({
-    url: "/calculate-points",
+    url: "/points",
     type: "POST",
     data: JSON.stringify(request),
     contentType: "application/json; charset=utf-8",
@@ -142,11 +142,11 @@ function calculatePoints() {
           },
         },
       });
-      const base_point = $("#base_point");
-      base_point.prop("disabled", false);
-      base_point.html('<option value="">Select base point</option>');
+      const base = $("#base");
+      base.prop("disabled", false);
+      base.html('<option value="">Select base point</option>');
       data.points.forEach((point) => {
-        base_point.append(`<option value="${point}">(${point})</option>`);
+        base.append(`<option value="${point}">(${point})</option>`);
       });
     },
     error: function (jqXHR, textStatus, errorThrown) {
@@ -166,14 +166,14 @@ function calculatePoints() {
 /// Function to remark the base point on the Points chart
 function remarkBasePoint() {
   $.ajax({
-    url: "/base-point",
+    url: "/base",
     type: "POST",
-    data: JSON.stringify({ base_point: $("#base_point").val() }),
+    data: JSON.stringify({ base: $("#base").val() }),
     contentType: "application/json; charset=utf-8",
     dataType: "json",
     success: function (data) {
       const index = data.points.findIndex(
-        (p) => p[0] === data.base_point[0] && p[1] === data.base_point[1]
+        (p) => p[0] === data.base[0] && p[1] === data.base[1]
       );
 
       if (index !== -1) {
@@ -216,10 +216,10 @@ function validateCurve() {
       }, 500);
   });
 
-  // Event handler for select with ID "base_point"
-  $("#base_point").on("change", function (e) {
+  // Event handler for select with ID "base"
+  $("#base").on("change", function (e) {
     e.preventDefault();
-    resetInputs("base_point");
+    resetInputs("base");
     if (PointsChart.data.datasets.length > 1) {
       PointsChart.data.datasets.splice(1);
     }
@@ -235,16 +235,16 @@ function validateCurve() {
 
 /// Generates the public keys
 function generateDX(id) {
-  const private_key = $(`#${id}`).val();
+  const dx = $(`#${id}`).val();
   $.ajax({
-    url: "/generate-key",
+    url: "/public",
     type: "POST",
-    data: JSON.stringify({ private_key }),
+    data: JSON.stringify({ dx, id }),
     contentType: "application/json; charset=utf-8",
     dataType: "json",
     success: function (data) {
-      const { key, steps } = data;
-      $(`#public_key_${id}`).val(`(${key})`);
+      const { dxG, steps } = data;
+      $(`#${id}G`).val(`(${dxG})`);
 
       const dataset_index = id === "dA" ? 1 : 2;
       PointsChart.data.datasets[dataset_index] = {
@@ -257,7 +257,7 @@ function generateDX(id) {
         order: 0,
       };
       PointsChart.update();
-      if ($("#public_key_dA").val() && $("#public_key_dB").val())
+      if ($("#dAG").val() && $("#dBG").val())
         generateShared();
     },
     error: function (err) {
@@ -279,7 +279,7 @@ function validateDX(id) {
       if ($(this).val() !== "") {
         generateDX(id);
       } else {
-        $("#shared_key").val("");
+        $("#shared").val("");
       }
     }
   });
@@ -288,22 +288,22 @@ function validateDX(id) {
 /// Generates the shared key
 function generateShared() {
   $.ajax({
-    url: "/generate-key",
+    url: "/shared",
     type: "POST",
     data: JSON.stringify({
-      private_key: $("#dA").val(),
-      public_key: $("#public_key_dB").val(),
+      dx: $("#dA").val(),
+      dyG: $("#dBG").val(),
     }),
     contentType: "application/json; charset=utf-8",
     dataType: "json",
     success: function (data) {
-      const key = `(${data.key})`;
-      $("#shared_key").val(key);
+      const shared = `(${data.shared})`;
+      $("#shared").val(shared);
       $("#alphabet").prop("disabled", false);
       $("#message").prop("disabled", false);
 
       const index = PointsChart.data.datasets[0].data.findIndex((element) => {
-        return element[0] === data.key[0] && element[1] === data.key[1];
+        return element[0] === data.shared[0] && element[1] === data.shared[1];
       });
 
       if (index !== -1) {
@@ -323,25 +323,27 @@ function generateShared() {
 function encrypt() {
   const alphabet = $("#alphabet").val();
   const message = $("#message").val();
-  const dA = $("#dA").val();
-  const dB = $("#dB").val();
-
-  if (message === "") return;
-  const reverse = $("#reverse").is(":checked");
+  const reverse = $("#Switch").is(":checked");
+  let dx, dyG;
+  if (!reverse) {
+    dx = $("#dB").val();
+    dyG = $("#dAG").val();
+  } else {
+    dx = $("#dA").val();
+    dyG = $("#dBG").val();
+  }
 
   $.ajax({
     url: "/encrypt",
     type: "POST",
-    data: JSON.stringify({ message, dA, dB, alphabet, reverse }),
+    data: JSON.stringify({ message, dx, dyG, alphabet }),
     contentType: "application/json; charset=utf-8",
     dataType: "json",
     success: function (data) {
       const { encoded, encrypted } = data;
-      $("#encoded").append(`<h3>Encoded message</h3>`);
-      $("#encrypted").append(`<h3>Encrypted message</h3>`);
       for (let i = 0; i < encoded.length; i++) {
-        $("#encoded").append(`<div>${encoded[i]}</div>`);
-        $("#encrypted").append(`<div>${encrypted[i]}</div>`);
+        $("#encoded").append(`<div>(${encoded[i]})</div>`);
+        $("#encrypted").append(`<div>((${encrypted[i][0]}), (${encrypted[i][1]}))</div>`);
       }
     },
     error: function (err) {
@@ -350,10 +352,82 @@ function encrypt() {
   });
 }
 
+function validateAlphabetOptions() {
+  const natural_language = ["alphabetic", "alphanumeric"];
+  const natural_options = ["spanish", "case-insensitive"];
+  const digital = ["binary", "decimal", "hexadecimal"];
+
+  const alphabets = {
+    alphabetic: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    alphanumeric: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
+    binary: "01",
+    decimal: "0123456789",
+    hexadecimal: "0123456789ABCDEF"
+  };
+
+  natural_language.forEach((id) => {
+    $(`#${id}`).on("click", function (e) {
+      if ($(this).attr("aria-pressed") === "true") {
+        digital.forEach((id) => {
+          $(`#${id}`).prop("disabled", true);
+        });
+        $(`#alphabet`).val(alphabets[id]);
+      } else {
+        digital.forEach((id) => {
+          $(`#${id}`).prop("disabled", false);
+        });
+      }
+    });
+  });
+
+  $(`#case-insensitive`).on("click", function (e) {
+    if (/[A-Z]/.test($("#alphabet").val())) {
+      const letters = $("#alphabet").val().replace(/[0-9]/g, "");
+      const numbers = $("#alphabet").val().replace(/[A-Z]/g, "");
+      const characters = [...new Set(letters.toLowerCase() + letters.toUpperCase() + numbers)].join("");
+      $("#alphabet").val(characters);
+    }
+  });
+
+  $(`#spanish`).on("click", function (e) {
+    if (/[A-Z]/.test($("#alphabet").val())) {
+      const
+    }
+  });
+
+  digital.forEach((id) => {
+    $(`#${id}`).on("click", function (e) {
+      if ($(this).attr("aria-pressed") === "true") {
+        natural_language.forEach((id) => {
+          $(`#${id}`).prop("disabled", true);
+        });
+        digital.forEach((id) => {
+          if (id !== $(this).attr("id")) $(`#${id}`).prop("disabled", true);
+        });
+        $(`#alphabet`).val(alphabets[id]);
+        natural_options.forEach((id) => {
+          $(`#${id}`).prop("disabled", true);
+        });
+      } else {
+        natural_language.forEach((id) => {
+          $(`#${id}`).prop("disabled", false);
+        });
+        digital.forEach((id) => {
+          $(`#${id}`).prop("disabled", false);
+        });
+        natural_options.forEach((id) => {
+          $(`#${id}`).prop("disabled", false);
+        });
+      }
+    });
+  });
+}
+
 function validateForms() {
   validateCurve();
   validateDX("dA");
   validateDX("dB");
+  validateAlphabetOptions();
   $("#alphabet").on("change", function (e) {
     e.preventDefault();
   });
@@ -363,7 +437,15 @@ function validateForms() {
       $("#encoded").html("");
       $("#encrypted").html("");
       encrypt();
-    }, 1000);
+    }, 1500);
+  });
+  $("#Switch").on("change", function (e) {
+    e.preventDefault();
+    setTimeout(() => {
+      $("#encoded").html("");
+      $("#encrypted").html("");
+      encrypt();
+    }, 1500);
   });
 }
 

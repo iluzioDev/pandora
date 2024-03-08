@@ -33,3 +33,12 @@ main > div > div > * > * {
   @extend .border;
   @extend .rounded;
 }
+
+label.toggle-on,
+label.toggle-off {
+  @extend .mt-0;
+}
+
+#alphabet-options {
+  font-size: 0.5rem !important;
+}

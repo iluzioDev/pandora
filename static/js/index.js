@@ -391,7 +391,7 @@ function validateAlphabetOptions() {
 
   $(`#spanish`).on("click", function (e) {
     if (/[A-Z]/.test($("#alphabet").val())) {
-      const
+      // const
     }
   });
 

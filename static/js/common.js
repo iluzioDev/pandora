@@ -4,6 +4,7 @@ function loadHTMLContent(url, targetElement) {
     $(targetElement).html(content);
   });
 }
+
 loadHTMLContent("/static/html/header.html", "header");
 loadHTMLContent("/static/html/footer.html", "footer");
 
@@ -11,3 +12,11 @@ loadHTMLContent("/static/html/footer.html", "footer");
 $("input, select").each(function () {
   $(this).attr("name", this.id);
 });
+
+function enable(element) {
+  $(element).prop("disabled", false);
+}
+
+function disable(element) {
+  $(element).prop("disabled", true);
+}

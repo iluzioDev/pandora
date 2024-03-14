@@ -1,4 +1,4 @@
-@import 'root';
+@import "root";
 
 form span {
   @extend .d-flex;
@@ -40,5 +40,15 @@ label.toggle-off {
 }
 
 #alphabet-options {
-  font-size: 0.5rem !important;
+  @extend .border;
+  @extend .border-dark;
+  @extend .rounded;
+  @extend .p-2;
+  row-gap: 0.5rem;
+}
+
+#alphabet-options > button {
+  @extend .btn;
+  @extend .m-0;
+  font-size: 0.9rem !important;
 }

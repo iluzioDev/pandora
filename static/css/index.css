@@ -2523,7 +2523,7 @@ textarea.form-control-lg {
   pointer-events: none;
 }
 
-.btn-check[disabled] + .btn, .btn-check[disabled] + button, .btn-check:disabled + .btn, .btn-check:disabled + button {
+.btn-check[disabled] + .btn, .btn-check[disabled] + button, #alphabet-options > .btn-check[disabled] + button, .btn-check:disabled + .btn, .btn-check:disabled + button, #alphabet-options > .btn-check:disabled + button {
   pointer-events: none;
   filter: none;
   opacity: 0.65;
@@ -2767,12 +2767,12 @@ textarea.form-control-lg {
   z-index: 5;
 }
 
-.input-group .btn, .input-group button {
+.input-group .btn, .input-group button, .input-group #alphabet-options > button {
   position: relative;
   z-index: 2;
 }
 
-.input-group .btn:focus, .input-group button:focus {
+.input-group .btn:focus, .input-group button:focus, .input-group #alphabet-options > button:focus {
   z-index: 5;
 }
 
@@ -2796,7 +2796,8 @@ textarea.form-control-lg {
 .input-group-lg > select,
 .input-group-lg > .input-group-text,
 .input-group-lg > .btn,
-.input-group-lg > button {
+.input-group-lg > button,
+#alphabet-options.input-group-lg > button {
   padding: 0.5rem 1rem;
   font-size: 1.25rem;
   border-radius: var(--bs-border-radius-lg);
@@ -2807,7 +2808,8 @@ textarea.form-control-lg {
 .input-group-sm > select,
 .input-group-sm > .input-group-text,
 .input-group-sm > .btn,
-.input-group-sm > button {
+.input-group-sm > button,
+#alphabet-options.input-group-sm > button {
   padding: 0.25rem 0.5rem;
   font-size: 0.875rem;
   border-radius: var(--bs-border-radius-sm);
@@ -3046,7 +3048,7 @@ textarea.form-control-lg {
   z-index: 4;
 }
 
-.btn, button {
+.btn, button, #alphabet-options > button {
   --bs-btn-padding-x: 0.75rem;
   --bs-btn-padding-y: 0.375rem;
   --bs-btn-font-family: ;
@@ -3081,24 +3083,24 @@ textarea.form-control-lg {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .btn, button {
+  .btn, button, #alphabet-options > button {
     transition: none;
   }
 }
 
-.btn:hover, button:hover {
+.btn:hover, button:hover, #alphabet-options > button:hover {
   color: var(--bs-btn-hover-color);
   background-color: var(--bs-btn-hover-bg);
   border-color: var(--bs-btn-hover-border-color);
 }
 
-.btn-check + .btn:hover, .btn-check + button:hover {
+.btn-check + .btn:hover, .btn-check + button:hover, #alphabet-options > .btn-check + button:hover {
   color: var(--bs-btn-color);
   background-color: var(--bs-btn-bg);
   border-color: var(--bs-btn-border-color);
 }
 
-.btn:focus-visible, button:focus-visible {
+.btn:focus-visible, button:focus-visible, #alphabet-options > button:focus-visible {
   color: var(--bs-btn-hover-color);
   background-color: var(--bs-btn-hover-bg);
   border-color: var(--bs-btn-hover-border-color);
@@ -3106,33 +3108,36 @@ textarea.form-control-lg {
   box-shadow: var(--bs-btn-focus-box-shadow);
 }
 
-.btn-check:focus-visible + .btn, .btn-check:focus-visible + button {
+.btn-check:focus-visible + .btn, .btn-check:focus-visible + button, #alphabet-options > .btn-check:focus-visible + button {
   border-color: var(--bs-btn-hover-border-color);
   outline: 0;
   box-shadow: var(--bs-btn-focus-box-shadow);
 }
 
-.btn-check:checked + .btn, .btn-check:checked + button,
+.btn-check:checked + .btn, .btn-check:checked + button, #alphabet-options > .btn-check:checked + button,
 :not(.btn-check) + .btn:active,
-:not(.btn-check) + button:active, .btn:first-child:active, button:first-child:active, .btn.active, button.active, .btn.show, button.show {
+:not(.btn-check) + button:active,
+#alphabet-options > :not(.btn-check) + button:active, .btn:first-child:active, button:first-child:active, #alphabet-options > button:first-child:active, .btn.active, button.active, #alphabet-options > button.active, .btn.show, button.show, #alphabet-options > button.show {
   color: var(--bs-btn-active-color);
   background-color: var(--bs-btn-active-bg);
   border-color: var(--bs-btn-active-border-color);
 }
 
-.btn-check:checked + .btn:focus-visible, .btn-check:checked + button:focus-visible,
+.btn-check:checked + .btn:focus-visible, .btn-check:checked + button:focus-visible, #alphabet-options > .btn-check:checked + button:focus-visible,
 :not(.btn-check) + .btn:active:focus-visible,
-:not(.btn-check) + button:active:focus-visible, .btn:first-child:active:focus-visible, button:first-child:active:focus-visible, .btn.active:focus-visible, button.active:focus-visible, .btn.show:focus-visible, button.show:focus-visible {
+:not(.btn-check) + button:active:focus-visible,
+#alphabet-options > :not(.btn-check) + button:active:focus-visible, .btn:first-child:active:focus-visible, button:first-child:active:focus-visible, #alphabet-options > button:first-child:active:focus-visible, .btn.active:focus-visible, button.active:focus-visible, #alphabet-options > button.active:focus-visible, .btn.show:focus-visible, button.show:focus-visible, #alphabet-options > button.show:focus-visible {
   box-shadow: var(--bs-btn-focus-box-shadow);
 }
 
-.btn-check:checked:focus-visible + .btn, .btn-check:checked:focus-visible + button {
+.btn-check:checked:focus-visible + .btn, .btn-check:checked:focus-visible + button, #alphabet-options > .btn-check:checked:focus-visible + button {
   box-shadow: var(--bs-btn-focus-box-shadow);
 }
 
-.btn:disabled, button:disabled, .btn.disabled, button.disabled,
+.btn:disabled, button:disabled, #alphabet-options > button:disabled, .btn.disabled, button.disabled, #alphabet-options > button.disabled,
 fieldset:disabled .btn,
-fieldset:disabled button {
+fieldset:disabled button,
+fieldset:disabled #alphabet-options > button {
   color: var(--bs-btn-disabled-color);
   pointer-events: none;
   background-color: var(--bs-btn-disabled-bg);
@@ -3436,14 +3441,14 @@ fieldset:disabled button {
   color: var(--bs-btn-hover-color);
 }
 
-.btn-lg, .btn-group-lg > .btn, .btn-group-lg > button {
+.btn-lg, .btn-group-lg > .btn, .btn-group-lg > button, #alphabet-options.btn-group-lg > button {
   --bs-btn-padding-y: 0.5rem;
   --bs-btn-padding-x: 1rem;
   --bs-btn-font-size: 1.25rem;
   --bs-btn-border-radius: var(--bs-border-radius-lg);
 }
 
-.btn-sm, .btn-group-sm > .btn, .btn-group-sm > button {
+.btn-sm, .btn-group-sm > .btn, .btn-group-sm > button, #alphabet-options.btn-group-sm > button {
   --bs-btn-padding-y: 0.25rem;
   --bs-btn-padding-x: 0.5rem;
   --bs-btn-font-size: 0.875rem;
@@ -3839,36 +3844,48 @@ fieldset:disabled button {
   vertical-align: middle;
 }
 
-.btn-group > .btn, .btn-group > button,
+.btn-group > .btn, .btn-group > button, #alphabet-options.btn-group > button,
 .btn-group-vertical > .btn,
-.btn-group-vertical > button {
+.btn-group-vertical > button,
+#alphabet-options.btn-group-vertical > button {
   position: relative;
   flex: 1 1 auto;
 }
 
-.btn-group > .btn-check:checked + .btn, .btn-group > .btn-check:checked + button,
+.btn-group > .btn-check:checked + .btn, .btn-group > .btn-check:checked + button, #alphabet-options.btn-group > .btn-check:checked + button,
 .btn-group > .btn-check:focus + .btn,
 .btn-group > .btn-check:focus + button,
+#alphabet-options.btn-group > .btn-check:focus + button,
 .btn-group > .btn:hover,
 .btn-group > button:hover,
+#alphabet-options.btn-group > button:hover,
 .btn-group > .btn:focus,
 .btn-group > button:focus,
+#alphabet-options.btn-group > button:focus,
 .btn-group > .btn:active,
 .btn-group > button:active,
+#alphabet-options.btn-group > button:active,
 .btn-group > .btn.active,
 .btn-group > button.active,
+#alphabet-options.btn-group > button.active,
 .btn-group-vertical > .btn-check:checked + .btn,
 .btn-group-vertical > .btn-check:checked + button,
+#alphabet-options.btn-group-vertical > .btn-check:checked + button,
 .btn-group-vertical > .btn-check:focus + .btn,
 .btn-group-vertical > .btn-check:focus + button,
+#alphabet-options.btn-group-vertical > .btn-check:focus + button,
 .btn-group-vertical > .btn:hover,
 .btn-group-vertical > button:hover,
+#alphabet-options.btn-group-vertical > button:hover,
 .btn-group-vertical > .btn:focus,
 .btn-group-vertical > button:focus,
+#alphabet-options.btn-group-vertical > button:focus,
 .btn-group-vertical > .btn:active,
 .btn-group-vertical > button:active,
+#alphabet-options.btn-group-vertical > button:active,
 .btn-group-vertical > .btn.active,
-.btn-group-vertical > button.active {
+.btn-group-vertical > button.active,
+#alphabet-options.btn-group-vertical > button.active {
   z-index: 1;
 }
 
@@ -3886,25 +3903,29 @@ fieldset:disabled button {
   border-radius: var(--bs-border-radius);
 }
 
-.btn-group > :not(.btn-check:first-child) + .btn, .btn-group > :not(.btn-check:first-child) + button,
+.btn-group > :not(.btn-check:first-child) + .btn, .btn-group > :not(.btn-check:first-child) + button, #alphabet-options.btn-group > :not(.btn-check:first-child) + button,
 .btn-group > .btn-group:not(:first-child) {
   margin-left: calc(var(--bs-border-width) * -1);
 }
 
-.btn-group > .btn:not(:last-child):not(.dropdown-toggle), .btn-group > button:not(:last-child):not(.dropdown-toggle),
+.btn-group > .btn:not(:last-child):not(.dropdown-toggle), .btn-group > button:not(:last-child):not(.dropdown-toggle), #alphabet-options.btn-group > button:not(:last-child):not(.dropdown-toggle),
 .btn-group > .btn.dropdown-toggle-split:first-child,
 .btn-group > button.dropdown-toggle-split:first-child,
+#alphabet-options.btn-group > button.dropdown-toggle-split:first-child,
 .btn-group > .btn-group:not(:last-child) > .btn,
-.btn-group > .btn-group:not(:last-child) > button {
+.btn-group > .btn-group:not(:last-child) > button,
+.btn-group > #alphabet-options.btn-group:not(:last-child) > button {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-.btn-group > .btn:nth-child(n + 3), .btn-group > button:nth-child(n + 3),
+.btn-group > .btn:nth-child(n + 3), .btn-group > button:nth-child(n + 3), #alphabet-options.btn-group > button:nth-child(n + 3),
 .btn-group > :not(.btn-check) + .btn,
 .btn-group > :not(.btn-check) + button,
+#alphabet-options.btn-group > :not(.btn-check) + button,
 .btn-group > .btn-group:not(:first-child) > .btn,
-.btn-group > .btn-group:not(:first-child) > button {
+.btn-group > .btn-group:not(:first-child) > button,
+.btn-group > #alphabet-options.btn-group:not(:first-child) > button {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
@@ -3924,12 +3945,12 @@ fieldset:disabled button {
   margin-right: 0;
 }
 
-.btn-sm + .dropdown-toggle-split, .btn-group-sm > .btn + .dropdown-toggle-split, .btn-group-sm > button + .dropdown-toggle-split {
+.btn-sm + .dropdown-toggle-split, .btn-group-sm > .btn + .dropdown-toggle-split, .btn-group-sm > button + .dropdown-toggle-split, #alphabet-options.btn-group-sm > button + .dropdown-toggle-split {
   padding-right: 0.375rem;
   padding-left: 0.375rem;
 }
 
-.btn-lg + .dropdown-toggle-split, .btn-group-lg > .btn + .dropdown-toggle-split, .btn-group-lg > button + .dropdown-toggle-split {
+.btn-lg + .dropdown-toggle-split, .btn-group-lg > .btn + .dropdown-toggle-split, .btn-group-lg > button + .dropdown-toggle-split, #alphabet-options.btn-group-lg > button + .dropdown-toggle-split {
   padding-right: 0.75rem;
   padding-left: 0.75rem;
 }
@@ -3943,25 +3964,28 @@ fieldset:disabled button {
 
 .btn-group-vertical > .btn,
 .btn-group-vertical > button,
+#alphabet-options.btn-group-vertical > button,
 .btn-group-vertical > .btn-group {
   width: 100%;
 }
 
-.btn-group-vertical > .btn:not(:first-child), .btn-group-vertical > button:not(:first-child),
+.btn-group-vertical > .btn:not(:first-child), .btn-group-vertical > button:not(:first-child), #alphabet-options.btn-group-vertical > button:not(:first-child),
 .btn-group-vertical > .btn-group:not(:first-child) {
   margin-top: calc(var(--bs-border-width) * -1);
 }
 
-.btn-group-vertical > .btn:not(:last-child):not(.dropdown-toggle), .btn-group-vertical > button:not(:last-child):not(.dropdown-toggle),
+.btn-group-vertical > .btn:not(:last-child):not(.dropdown-toggle), .btn-group-vertical > button:not(:last-child):not(.dropdown-toggle), #alphabet-options.btn-group-vertical > button:not(:last-child):not(.dropdown-toggle),
 .btn-group-vertical > .btn-group:not(:last-child) > .btn,
-.btn-group-vertical > .btn-group:not(:last-child) > button {
+.btn-group-vertical > .btn-group:not(:last-child) > button,
+.btn-group-vertical > #alphabet-options.btn-group:not(:last-child) > button {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
 
-.btn-group-vertical > .btn ~ .btn, .btn-group-vertical > button ~ .btn, .btn-group-vertical > .btn ~ button, .btn-group-vertical > button ~ button,
+.btn-group-vertical > .btn ~ .btn, .btn-group-vertical > button ~ .btn, #alphabet-options.btn-group-vertical > button ~ .btn, .btn-group-vertical > .btn ~ button, .btn-group-vertical > button ~ button, #alphabet-options.btn-group-vertical > .btn ~ button, #alphabet-options.btn-group-vertical > button ~ button,
 .btn-group-vertical > .btn-group:not(:first-child) > .btn,
-.btn-group-vertical > .btn-group:not(:first-child) > button {
+.btn-group-vertical > .btn-group:not(:first-child) > button,
+.btn-group-vertical > #alphabet-options.btn-group:not(:first-child) > button {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
@@ -5071,7 +5095,7 @@ fieldset:disabled button {
   display: none;
 }
 
-.btn .badge, button .badge {
+.btn .badge, button .badge, #alphabet-options > button .badge {
   position: relative;
   top: -1px;
 }
@@ -7130,7 +7154,7 @@ fieldset:disabled button {
   opacity: 0.5;
 }
 
-.placeholder.btn::before, button.placeholder::before {
+.placeholder.btn::before, button.placeholder::before, #alphabet-options > button.placeholder::before {
   display: inline-block;
   content: "";
 }
@@ -7817,7 +7841,7 @@ fieldset:disabled button {
   transform: translateY(-50%) !important;
 }
 
-.border, main > div, .canvas > * > * {
+.border, main > div, .canvas > * > *, #alphabet-options {
   border: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
 }
 
@@ -7892,7 +7916,7 @@ fieldset:disabled button {
   border-color: rgba(var(--bs-light-rgb), var(--bs-border-opacity)) !important;
 }
 
-.border-dark {
+.border-dark, #alphabet-options {
   --bs-border-opacity: 1;
   border-color: rgba(var(--bs-dark-rgb), var(--bs-border-opacity)) !important;
 }
@@ -8215,7 +8239,7 @@ fieldset:disabled button {
   order: 6 !important;
 }
 
-.m-0, main > div > div {
+.m-0, main > div > div, #alphabet-options > button {
   margin: 0 !important;
 }
 
@@ -8434,7 +8458,7 @@ label.toggle-off {
   padding: 0.25rem !important;
 }
 
-.p-2 {
+.p-2, #alphabet-options {
   padding: 0.5rem !important;
 }
 
@@ -9250,7 +9274,7 @@ label.toggle-off {
   pointer-events: auto !important;
 }
 
-.rounded, main > div, .canvas > * > * {
+.rounded, main > div, .canvas > * > *, #alphabet-options {
   border-radius: var(--bs-border-radius) !important;
 }
 
@@ -12368,5 +12392,9 @@ main {
 }
 
 #alphabet-options {
-  font-size: 0.5rem !important;
+  row-gap: 0.5rem;
+}
+
+#alphabet-options > button {
+  font-size: 0.9rem !important;
 }

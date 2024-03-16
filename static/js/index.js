@@ -80,6 +80,7 @@ function destroy() {
 
 /// Function to split the elliptic curve into segments in order to avoid sharp edges and display a smooth curve
 function splitCurve(curve) {
+    console.log(curve);
     for (let i = 0; i < curve.length - 1; ++i) {
         if (utils.distance(curve[i], curve[i + 1]) > 0.25) {
             const p1 = curve[i];

@@ -4,17 +4,19 @@ from .utils import is_prime
 from .point import Point
 
 class Curve():
-  def __init__(self, a, b):
+  def __init__(self, a, b, simulation: bool = False):
     self.a = a
     self.b = b
     self.p = 0
+    self.n = 0
     self.points = []
-    self.base = Point()
+    self.base = Point(a, 0)
     self.public_keys = {}
+    self.simulation = simulation
     self.alphabet = ''
 
   def __setattr__(self, __name: str, __value: Any) -> None:
-    if __name in ['a', 'b', 'p'] and not isinstance(__value, int):
+    if __name in ['a', 'b', 'p', 'n'] and not isinstance(__value, int):
       raise ValueError('Invalid value!')
     # if __name == 'p' and not is_prime(__value):
     #   raise ValueError('Not a prime number!')
@@ -29,7 +31,8 @@ class Curve():
     if __name in ['a', 'b', 'p'] and hasattr(self, __name) and getattr(self, __name) != __value:
       self.points = []
       super().__setattr__(__name, __value)
-      #self.calculate_points()
+      if self.simulation:
+        self.calculate_points()
       return
     super().__setattr__(__name, __value)
 
@@ -46,7 +49,7 @@ class Curve():
       y2 = (x ** 3 + self.a * x + self.b) % self.p
       for y in range(self.p):
         if y ** 2 % self.p == y2:
-          self.points.append(Point(x, y))
+          self.points.append(Point(self.a, self.p, x, y))
 
   def insert_key(self, id: str, public_key: 'Point') -> None:
     self.public_keys[id] = public_key
@@ -54,8 +57,8 @@ class Curve():
   def steps(self, point: 'Point', scalar: int) -> list:
     result = []
     for i in range(1, scalar + 1):
-      if not (point * (i, self)).at_infinity():
-        result.append(point * (i, self))
+      if not (point * i).at_infinity():
+        result.append(point * i)
     return result
 
   def encode(self, message: str) -> list:
@@ -76,7 +79,7 @@ class Curve():
           y = [point.y for point in self.points if point.x == x][0]
           break
         j += 1
-      encoded.append(Point(x, y))
+      encoded.append(Point(self.a, self.p, x, y))
     return encoded
 
   def decode(self, points: list) -> str:
@@ -97,10 +100,10 @@ class Curve():
   def encrypt(self, message: str, dx: int, dyG: 'Point') -> list:
     if self.base is None:
       raise ValueError('Base point not set!')
-    if dyG == Point():
+    if dyG == Point(self.a, self.p):
       raise ValueError('Public key of the other party not set!')
     if dx == 0:
-      return [Point()] * len(message)
+      return [Point(self.a, self.p)] * len(message)
     return [(Qm + ((dyG * (dx, self), self)), self.base * (dx, self)) for Qm in self.encode(message)]
 
   def decrypt(self, points: list, dx: int) -> str:

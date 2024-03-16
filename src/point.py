@@ -2,7 +2,9 @@ import json
 from .utils import euclid_extended, simplify
 
 class Point():
-  def __init__(self, x = 0, y = 0):
+  def __init__(self, a, p, x = 0, y = 0):
+    self.a = a
+    self.p = p
     self.x = x
     self.y = y
 
@@ -12,47 +14,45 @@ class Point():
     return self.x == other.x and self.y == other.y
 
   def __neg__(self) -> 'Point':
-    return Point(self.x, -self.y)
+    return Point(self.a, self.p, self.x, -self.y)
 
-  def __add__(self, info: tuple) -> 'Point':
-    other, curve = info
+  def __add__(self, other: 'Point') -> 'Point':
     if self.at_infinity():
         return other
     if other.at_infinity():
         return self
     if self == -other:
-        return Point(-1, -1)
+        return Point(self.a, self.p, -1, -1)
 
     if self == other:
-        num, den = (3 * self.x ** 2 + curve.a), (2 * self.y)
+        num, den = (3 * self.x ** 2 + self.a), (2 * self.y)
     else:
         num, den = (other.y - self.y), (other.x - self.x)
 
     num, den = simplify(num, den)
-    lamb = (num * euclid_extended(abs(den), curve.p)[1]) % curve.p
+    lamb = (num * euclid_extended(abs(den), self.p)[1]) % self.p
 
-    x3 = (lamb ** 2 - self.x - other.x) % curve.p
-    y3 = (lamb * (self.x - x3) - self.y) % curve.p
+    x3 = (lamb ** 2 - self.x - other.x) % self.p
+    y3 = (lamb * (self.x - x3) - self.y) % self.p
 
-    return Point(x3, y3)
+    return Point(self.a, self.p, x3, y3)
 
   def __sub__(self, other: 'Point') -> 'Point':
     return self + -other
 
-  def __mul__(self, info: tuple) -> 'Point':
-    scalar, curve = info
+  def __mul__(self, scalar: int) -> 'Point':
     if scalar == 0 or self.at_infinity():
-        return Point(-1, -1)
+        return Point(self.a, self.p, -1, -1)
 
-    result = Point()
+    result = Point(self.a, self.p)
     addend = self
     while scalar:
         if scalar & 1:
-            if result == Point():
+            if result == Point(self.a, self.p):
                 result = addend
             else:
-                result += (addend, curve)
-        addend += (addend, curve)
+                result += addend
+        addend += addend
         scalar >>= 1
     return result
 

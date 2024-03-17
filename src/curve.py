@@ -104,7 +104,7 @@ class Curve():
       raise ValueError('Public key of the other party not set!')
     if dx == 0:
       return [Point(self.a, self.p)] * len(message)
-    return [(Qm + ((dyG * (dx, self), self)), self.base * (dx, self)) for Qm in self.encode(message)]
+    return [(Qm + (dyG * dx), self.base * dx) for Qm in self.encode(message)]
 
   def decrypt(self, points: list, dx: int) -> str:
     if self.base is None:
@@ -113,7 +113,7 @@ class Curve():
       return ''
     msg = ''
     for encrypted, dyG in points:
-      shared = dyG * (dx, self)
+      shared = dyG * dx
       decrypted = encrypted - shared
       if decrypted == None:
         return ''
